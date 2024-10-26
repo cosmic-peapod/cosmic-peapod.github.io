@@ -1,0 +1,61 @@
+To ensure your project works online and overcomes cross-origin issues, you can follow these steps:
+
+### 1. Host Your Assets on a Server
+When your assets (like the PDF file) are hosted on a server, the cross-origin issue typically resolves itself. You can use platforms like:
+
+- **GitHub Pages**: Great for static websites.
+- **Netlify**: Easy deployment for static sites.
+- **Vercel**: Another option for deploying static applications.
+- **Firebase Hosting**: Provides a straightforward way to host web apps.
+
+### 2. Modify Code to Fetch from a Server
+If your PDF is hosted on a web server, ensure the URL you use to fetch the PDF points to that location. For example:
+
+```javascript
+const pdfBytes = await fetch('https://yourdomain.com/assets/example.pdf').then(res => {
+    if (!res.ok) throw new Error('Network response was not ok.');
+    return res.arrayBuffer();
+});
+```
+
+### 3. Use CORS Headers
+If you control the server that hosts your PDF, make sure it includes appropriate CORS (Cross-Origin Resource Sharing) headers. You can set it up to allow access from your domain. For example, in a Node.js/Express server, you would do:
+
+```javascript
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow all origins, or specify your domain
+    next();
+});
+```
+
+### 4. Example of Using GitHub Pages
+
+Here’s a quick guide on how to deploy your project using GitHub Pages:
+
+1. **Create a GitHub Repository**:
+   - Push your project to a new GitHub repository.
+
+2. **Enable GitHub Pages**:
+   - Go to your repository settings.
+   - Scroll down to the "GitHub Pages" section.
+   - Set the source to the main branch (or `gh-pages` branch if you created one).
+
+3. **Access Your Site**:
+   - After enabling GitHub Pages, your site will be accessible at `https://<your-username>.github.io/<your-repo-name>/`.
+
+4. **Update Your Fetch URL**:
+   - Ensure that the PDF file is in the correct path on the GitHub repository (e.g., `assets/example.pdf`).
+   - Use the raw link for assets if needed (e.g., `https://raw.githubusercontent.com/<your-username>/<your-repo-name>/main/assets/example.pdf`).
+
+### Example of Updated Code
+Here’s how you might update the fetch call to point to your hosted PDF:
+
+```javascript
+const pdfBytes = await fetch('https://raw.githubusercontent.com/your-username/your-repo-name/main/assets/example.pdf').then(res => {
+    if (!res.ok) throw new Error('Network response was not ok.');
+    return res.arrayBuffer();
+});
+```
+
+### Summary
+By hosting your project online and ensuring that you have the correct CORS settings or using direct links to hosted assets, you can avoid cross-origin issues. Deploy your project to a service like GitHub Pages, Netlify, or Vercel, and update your asset URLs accordingly. If you need help with specific hosting or configuration, feel free to ask!
