@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julistegeneraattori - Vuoren Valppaat</title>
+    <link rel="icon" type="image/x-icon" href="assets/Vuoren Valppaat ry kotka.png">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.4.4/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <p class="repeated-img"></p>
+    <div class="content">
+        <div>
+            <h1>Lataa tästä valmiit myyjän myyntijulisteet!</h1>
+            <p>Voit luoda tästä itsellesi julisteen joko MobilePay-myyntiin (koko: A6) tai verkkokauppamyyntiin (koko: A4) omilla
+                henkilökohtaisilla QR-koodeillasi!</p>
+            <h3>Julisteen tyyli:</h3>
+            <select id="print-type-selector" name="form-select"
+                onchange="showElement(this.id, 'MobilePay-tyyli', 'Verkkokauppamyynti-tyyli')">
+                <option value="" selected>Valitse</option>
+                <option value="A">MobilePay</option>
+                <option value="B">Verkkokauppamyynti</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div id="MobilePay-tyyli" class="content" style="display:none;">
+            <p class="repeated-img">&nbsp;</p>
+            <div class="header">
+                <h1>Myyjän MobilePay-myyntijuliste</h1>
+                <p>Syötä alle myyjän jäsennumero (muotoa "1234567890"). Jäsennumeron löydät kirjautumalla myyjän Kuksaan
+                    osoitteessa: <a href="https://asiointi.partio.fi">https://asiointi.partio.fi</a></p>
+                    <h2>Huom! Tämä juliste on A6-kokoinen!</h2>
+            </div>
+            <div class="input-area">
+                <input id="qrInput-1" class="input-field" type="text" maxlength="10"
+                    onkeypress="return /[0-9]/i.test(event.key) && this.value.length < this.maxLength"
+                    placeholder="Syötä jäsennumero" />
+                <!--Allowing only numeric inputs of maximum length specified in maxLength-->
+                <input id="generate-mobilepay" class="submit-btn" type="submit" value="Luo PDF"
+                    onclick="LuoMobilepayJuliste()">
+                <h3>Klikkaamalla painiketta "Luo PDF", alla olevan näköinen juliste ladataan PDF-muotoisena
+                    laitteellesi:
+                </h3>
+            </div>
+            <div><img src="assets/esimerkki-mobilepay.png"></div>
+        </div>
+        <div id="Verkkokauppamyynti-tyyli" class="content" style="display:none;">
+            <p class="repeated-img">&nbsp;</p>
+            <div class="header">
+                <h1>Myyjän verkkokauppamyyntijuliste</h1>
+                <p>Syötä alle myyjän jäsennumero (muotoa "1234567890"). Jäsennumeron löydät kirjautumalla myyjän Kuksaan
+                    osoitteessa: <a href="https://asiointi.partio.fi">https://asiointi.partio.fi</a></p>
+                    <p>Tätä linkkiä käyttämällä voit myydä adventtikalentereita Suomen Partiolaisten verkkokaupasta vaikka kaukaisille sukulaisillekin ilman toimitushuolia ja silti kerrytät henkilökohtaista myyntitulostasi, jolla voit ansaita tonttumerkkejä!</p>
+                <p><b>Huomaathan, että verkkokauppamyynnin henkilökohtainen linkki (QR-koodi) toimii vain, jos myyjän
+                        jäsenyys on alkanut viimeistään 11.9.2024.</b> Katso lisätiedot Suomen Partiolaisten
+                    nettisivuilta:
+                    <a
+                        href="https://www.adventtikalenteri.fi/myyjille/myynti/verkkokauppa-myyntikanavana/henkilokohtaiset-myyntilinkit/">https://www.adventtikalenteri.fi/myyjille/myynti/verkkokauppa-myyntikanavana/henkilokohtaiset-myyntilinkit/</a>
+                </p>
+            </div>
+            <div class="input-area">
+                <h3>Valittavanasi julisteelle on kaksi erilaista vaihtoehtoa, voit vaihtaa niiden välillä käyttämällä
+                    Vaihtoehto-valikkoa! Molemmat ovat A4-kokoisia.</h3>
+                <select id="verkkomyynti-style-selector" name="form-select"
+                    onchange="showElement(this.id, 'verkkomyynti-kuva-1', 'verkkomyynti-kuva-2')">
+                    <option value="A" selected>Vaihtoehto 1</option>
+                    <option value="B">Vaihtoehto 2</option>
+                </select>
+                <input id="qrInput-2" class="input-field" type="text" maxlength="10"
+                    onkeypress="return /[0-9]/i.test(event.key) && this.value.length < this.maxLength"
+                    placeholder="Syötä jäsennumero" />
+                <!--Allowing only numeric inputs of maximum length specified in maxLength-->
+
+                <input id="generate-verkkomyynti" class="submit-btn" type="submit" value="Luo PDF">
+                <h3>Klikkaamalla painiketta "Luo PDF", alla olevan näköinen juliste ladataan PDF-muotoisena
+                    laitteellesi:
+                </h3>
+            </div>
+            <div id="verkkomyynti-kuva-1"><img src="assets/esimerkki-verkkomyynti-1.png"></div>
+            <div id="verkkomyynti-kuva-2" class="hidden"><img src="assets/esimerkki-verkkomyynti-2.png"></div>
+        </div>
+        <p class="repeated-img">&nbsp;</p>
+        <p>Ohjeet myyntiin: <a href="https://www.vuorenvalppaat.fi/ajankohtaista/adventtikalenteri/" style="color: black;">vuorenvalppaat.fi</a></p>
+        <a href="https://www.vuorenvalppaat.fi/"><img src="assets/vvbanneri_tausta.png" style="border-radius: 10px;"></a>
+
+        <canvas id="qrCanvas" style="display:none;"></canvas>
+        <script src="scripts.js"></script>
+</body>
+
+</html>
