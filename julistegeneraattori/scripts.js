@@ -39,7 +39,7 @@ document.getElementById('generate-mobilepay').addEventListener('click', async fu
     }
 
     //Text to code into QR code & relative placement of user input
-    const qrInput = "https://mobilepay.fi/Yrityksille/Maksulinkki/maksulinkki-vastaus?phone=54068&amount=10&comment=Kalenteri%20" + userInput + "&lock=1";
+    const qrInput = "https://mobilepay.fi/Yrityksille/Maksulinkki/maksulinkki-vastaus?phone=54068&amount=13&comment=Kalenteri%20" + userInput + "&lock=1";
 
     // Generate QR code and draw it on the canvas
     const canvas = document.getElementById('qrCanvas');
